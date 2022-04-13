@@ -22,7 +22,9 @@ def pregunta_01():
     40
 
     """
-    return
+    tam=tbl0.shape
+    filas=tam[0]
+    return filas
 
 
 def pregunta_02():
@@ -33,7 +35,9 @@ def pregunta_02():
     4
 
     """
-    return
+    tam=tbl0.shape
+    columnas=tam[1]
+    return columnas
 
 
 def pregunta_03():
@@ -48,9 +52,10 @@ def pregunta_03():
     D     6
     E    14
     Name: _c1, dtype: int64
-
     """
-    return
+    respuesta=tbl0._c1.value_counts()
+    #ordenar de mayor a menor
+    return respuesta
 
 
 def pregunta_04():
@@ -65,7 +70,8 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    respuesta= tbl0.groupby('_c1')['_c2'].mean()
+    return respuesta
 
 
 def pregunta_05():
@@ -82,7 +88,8 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    respuesta= tbl0.groupby('_c1')['_c2'].max()
+    return respuesta
 
 
 def pregunta_06():
@@ -94,7 +101,10 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    respuesta=list(tbl1['_c4'].unique())
+    respuesta=[x.upper() for x in respuesta]
+    respuesta.sort()
+    return respuesta
 
 
 def pregunta_07():
@@ -110,7 +120,8 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    respuesta=tbl0.groupby('_c1')['_c2'].sum()
+    return respuesta
 
 
 def pregunta_08():
@@ -128,7 +139,10 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    tbl0['suma']=tbl0['_c0']+tbl0['_c2']
+    respuesta=tbl0
+    return respuesta
 
 
 def pregunta_09():
@@ -146,7 +160,10 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    tbl0['year']=[x.split('-')[0] for x in tbl0['_c3']]
+    respuesta=tbl0
+    return respuesta
 
 
 def pregunta_10():
