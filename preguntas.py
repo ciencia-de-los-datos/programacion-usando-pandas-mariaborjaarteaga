@@ -55,6 +55,7 @@ def pregunta_03():
     """
     respuesta=tbl0._c1.value_counts()
     #ordenar de mayor a menor
+    respuesta=respuesta.sort_index()
     return respuesta
 
 
@@ -180,7 +181,20 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    letras=tbl0['_c1'].unique()
+    letras=sorted(letras)
+    df = pd.DataFrame(letras, columns = ['_c1'])
+    df['_c2']=''
+    indices=len(letras)
+    for row in df.iterrows():
+        lista=sorted(tbl0[tbl0['_c1']==row[1][0]]['_c2'])
+        sentence=''
+        for word in lista:
+            sentence += str(word) + ":"
+        row[1][1]=sentence[0:-1]
+    df.set_index('_c1', inplace = True)
+    return df
 
 
 def pregunta_11():
@@ -199,7 +213,19 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    tbl1 = pd.read_csv("tbl1.tsv", sep="\t")
+    numeros=tbl1['_c0'].unique()
+    df = pd.DataFrame(numeros, columns = ['_c0'])
+    df['_c4']=''
+    valores=[]
+    for row in df.iterrows():
+        lista=sorted(tbl1[tbl1['_c0']==row[1][0]]['_c4'])
+        sentence=''
+        for word in lista:
+            sentence += str(word) + ","
+        valores.append(sentence[0:-1])
+    df['_c4']=valores
+    return df
 
 
 def pregunta_12():
@@ -217,7 +243,22 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
+    tbl2['_c5']=''
+    tbl2['_c5b']=tbl2['_c5b'].astype(str)
+    tbl2['_c5'] = tbl2['_c5a'] + ':'+tbl2['_c5b']
+    numeros=tbl2['_c0'].unique()
+    df = pd.DataFrame(numeros, columns = ['_c0'])
+    df['_c5']=''
+    valores=[]
+    for row in df.iterrows():
+        lista=sorted(tbl2[tbl2['_c0']==row[1][0]]['_c5'])
+        sentence=''
+        for word in lista:
+            sentence += str(word) + ","
+        valores.append(sentence[0:-1])
+    df['_c5']=valores
+    return df
 
 
 def pregunta_13():
@@ -234,4 +275,8 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
+    tbl0['suma']=tbl2.groupby('_c0')['_c5b'].sum()
+    df=tbl0.groupby('_c1')['suma'].sum()
+    return df
