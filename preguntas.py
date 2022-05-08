@@ -22,7 +22,9 @@ def pregunta_01():
     40
 
     """
-    return
+    tam=tbl0.shape
+    filas=tam[0]
+    return filas
 
 
 def pregunta_02():
@@ -33,7 +35,9 @@ def pregunta_02():
     4
 
     """
-    return
+    tam=tbl0.shape
+    columnas=tam[1]
+    return columnas
 
 
 def pregunta_03():
@@ -48,9 +52,11 @@ def pregunta_03():
     D     6
     E    14
     Name: _c1, dtype: int64
-
     """
-    return
+    respuesta=tbl0._c1.value_counts()
+    #ordenar de mayor a menor
+    respuesta=respuesta.sort_index()
+    return respuesta
 
 
 def pregunta_04():
@@ -65,7 +71,8 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    respuesta= tbl0.groupby('_c1')['_c2'].mean()
+    return respuesta
 
 
 def pregunta_05():
@@ -82,7 +89,8 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    respuesta= tbl0.groupby('_c1')['_c2'].max()
+    return respuesta
 
 
 def pregunta_06():
@@ -94,7 +102,10 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    respuesta=list(tbl1['_c4'].unique())
+    respuesta=[x.upper() for x in respuesta]
+    respuesta.sort()
+    return respuesta
 
 
 def pregunta_07():
@@ -110,7 +121,8 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    respuesta=tbl0.groupby('_c1')['_c2'].sum()
+    return respuesta
 
 
 def pregunta_08():
@@ -128,7 +140,10 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    tbl0['suma']=tbl0['_c0']+tbl0['_c2']
+    respuesta=tbl0
+    return respuesta
 
 
 def pregunta_09():
@@ -146,7 +161,10 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    tbl0['year']=[x.split('-')[0] for x in tbl0['_c3']]
+    respuesta=tbl0
+    return respuesta
 
 
 def pregunta_10():
@@ -163,7 +181,20 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    letras=tbl0['_c1'].unique()
+    letras=sorted(letras)
+    df = pd.DataFrame(letras, columns = ['_c1'])
+    df['_c2']=''
+    indices=len(letras)
+    for row in df.iterrows():
+        lista=sorted(tbl0[tbl0['_c1']==row[1][0]]['_c2'])
+        sentence=''
+        for word in lista:
+            sentence += str(word) + ":"
+        row[1][1]=sentence[0:-1]
+    df.set_index('_c1', inplace = True)
+    return df
 
 
 def pregunta_11():
@@ -182,7 +213,19 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    tbl1 = pd.read_csv("tbl1.tsv", sep="\t")
+    numeros=tbl1['_c0'].unique()
+    df = pd.DataFrame(numeros, columns = ['_c0'])
+    df['_c4']=''
+    valores=[]
+    for row in df.iterrows():
+        lista=sorted(tbl1[tbl1['_c0']==row[1][0]]['_c4'])
+        sentence=''
+        for word in lista:
+            sentence += str(word) + ","
+        valores.append(sentence[0:-1])
+    df['_c4']=valores
+    return df
 
 
 def pregunta_12():
@@ -200,7 +243,22 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
+    tbl2['_c5']=''
+    tbl2['_c5b']=tbl2['_c5b'].astype(str)
+    tbl2['_c5'] = tbl2['_c5a'] + ':'+tbl2['_c5b']
+    numeros=tbl2['_c0'].unique()
+    df = pd.DataFrame(numeros, columns = ['_c0'])
+    df['_c5']=''
+    valores=[]
+    for row in df.iterrows():
+        lista=sorted(tbl2[tbl2['_c0']==row[1][0]]['_c5'])
+        sentence=''
+        for word in lista:
+            sentence += str(word) + ","
+        valores.append(sentence[0:-1])
+    df['_c5']=valores
+    return df
 
 
 def pregunta_13():
@@ -217,4 +275,8 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
+    tbl0['suma']=tbl2.groupby('_c0')['_c5b'].sum()
+    df=tbl0.groupby('_c1')['suma'].sum()
+    return df
