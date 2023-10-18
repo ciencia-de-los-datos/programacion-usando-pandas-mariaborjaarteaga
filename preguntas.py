@@ -19,7 +19,7 @@ def pregunta_01():
     ¿Cuál es la cantidad de filas en la tabla `tbl0.tsv`?
 
     Rta/
-    40
+    40 
 
     """
     tam=tbl0.shape
